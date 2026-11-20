@@ -1,7 +1,271 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <meta charset="UTF-8"><!DOCTYPE html>
+<html lang="en">
+<head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>A Little Date Planning</title>
+  <script src="https://jsdelivr.net"></script>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Georgia, serif;
+      background: #f6f0e9;
+      color: #30251f;
+    }
+    .page {
+      width: min(92%, 620px);
+      margin: 55px auto;
+      padding: 35px;
+      background: #fffdf9;
+      border: 1px solid #e9ddd0;
+      border-radius: 18px;
+      box-shadow: 0 15px 45px #3b24120d;
+    }
+    h1 { font-size: 34px; font-weight: 400; margin: 0 0 12px; }
+    p { line-height: 1.6; color: #75675e; }
+    label { display: block; margin: 20px 0 8px; font-size: 14px; }
+    input, textarea, select {
+      width: 100%;
+      padding: 14px;
+      border: 1px solid #dfd2c6;
+      border-radius: 8px;
+      background: #fff;
+      color: #30251f;
+      font: inherit;
+    }
+    textarea { min-height: 100px; resize: vertical; }
+    button {
+      width: 100%;
+      padding: 15px;
+      margin-top: 24px;
+      border: 0;
+      border-radius: 8px;
+      background: #30251f;
+      color: white;
+      font-size: 15px;
+      cursor: pointer;
+    }
+    button:disabled { opacity: .6; cursor: wait; }
+    .hidden { display: none; }
+    .message { margin-top: 18px; line-height: 1.5; }
+    .request {
+      padding: 16px 0;
+      border-bottom: 1px solid #e9ddd0;
+      line-height: 1.7;
+    }
+    .back {
+      display: inline-block;
+      margin-bottom: 24px;
+      color: #75675e;
+      cursor: pointer;
+      text-decoration: underline;
+    }
+    @media(max-width: 500px) {
+      .page { margin: 20px auto; padding: 25px 20px; }
+      h1 { font-size: 29px; }
+    }
+  </style>
+</head>
+<body>
+
+  <main class="page" id="formPage">
+    <h1>Let's plan a date ♡</h1>
+    <p>I want to plan something special with you, but first, tell me what you'd enjoy.</p>
+
+    <form id="dateForm">
+      <label for="location">Where would you love to go?</label>
+      <input id="location" name="location" placeholder="Beach, restaurant, somewhere quiet..." required>
+
+      <label for="date">What day works for you?</label>
+      <input id="date" name="preferred_date" type="date" required>
+
+      <label for="time">What time would you prefer?</label>
+      <input id="time" name="preferred_time" type="time" required>
+
+      <label for="food">What would you like to eat?</label>
+      <input id="food" name="food" placeholder="Pizza, seafood, anything..." required>
+
+      <label for="message">Anything else you'd like me to know? (Optional)</label>
+      <textarea id="message" name="message" placeholder="Your little ideas, surprises, or requests..."></textarea>
+
+      <button id="submitBtn" type="submit">Send my date ideas ♡</button>
+      <div class="message" id="formMessage" role="status"></div>
+    </form>
+  </main>
+
+  <main class="page hidden" id="successPage">
+    <h1>It's a date ♡</h1>
+    <p>Your ideas have been received; now let me work on making it special.</p>
+  </main>
+
+  <main class="page hidden" id="adminPage">
+    <span class="back" onclick="showPage('loginPage')">← Back</span>
+    <h1>Private dashboard</h1>
+    <p>Only your account should be able to access these submissions.</p>
+    <button id="refreshBtn" type="button">Refresh submissions</button>
+    <div id="adminMessage" class="message"></div>
+    <div id="requests"></div>
+    <button id="logoutBtn" type="button">Log out</button>
+  </main>
+
+  <main class="page hidden" id="loginPage">
+    <span class="back" onclick="showPage('formPage')">← Back</span>
+    <h1>Admin login</h1>
+    <p>Sign in with your private admin account.</p>
+    <form id="loginForm">
+      <label for="email">Email</label>
+      <input id="email" type="email" required autocomplete="username">
+      <label for="password">Password</label>
+      <input id="password" type="password" required autocomplete="current-password">
+      <button type="submit" id="loginBtn">Sign in</button>
+      <div id="loginMessage" class="message"></div>
+    </form>
+  </main>
+
+  <script>
+    const SUPABASE_URL = "https://supabase.co";
+    const SUPABASE_ANON_KEY = "sb_publishable_qFMp0c6HytpIwDVN59iGKw_VCpH74Xm";
+    const ADMIN_EMAIL = "jawsafeyear@gmail.com";
+
+    const db = window.supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_ANON_KEY
+    );
+
+    function showPage(id) {
+      ["formPage", "successPage", "adminPage", "loginPage"].forEach(page => {
+        document.getElementById(page).classList.add("hidden");
+      });
+      document.getElementById(id).classList.remove("hidden");
+    }
+
+    function showError(element, error) {
+      element.textContent = error.message || String(error);
+    }
+
+    document.getElementById("dateForm").addEventListener("submit", async event => {
+      event.preventDefault();
+
+      const button = document.getElementById("submitBtn");
+      const message = document.getElementById("formMessage");
+      button.disabled = true;
+      button.textContent = "Sending...";
+      message.textContent = "";
+
+      const request = {
+        location: document.getElementById("location").value.trim(),
+        preferred_date: document.getElementById("date").value,
+        preferred_time: document.getElementById("time").value,
+        food: document.getElementById("food").value.trim(),
+        message: document.getElementById("message").value.trim()
+      };
+
+      try {
+        const { error } = await db
+          .from("date_requests")
+          .insert(request);
+
+        if (error) throw error;
+
+        document.getElementById("dateForm").reset();
+        showPage("successPage");
+      } catch (error) {
+        showError(message, error);
+      } finally {
+        button.disabled = false;
+        button.textContent = "Send my date ideas ♡";
+      }
+    });
+
+    document.getElementById("loginForm").addEventListener("submit", async event => {
+      event.preventDefault();
+
+      const button = document.getElementById("loginBtn");
+      const message = document.getElementById("loginMessage");
+      button.disabled = true;
+      message.textContent = "Signing in...";
+
+      try {
+        const { data, error } = await db.auth.signInWithPassword({
+          email: document.getElementById("email").value.trim(),
+          password: document.getElementById("password").value
+        });
+
+        if (error) throw error;
+        if (data.user.email.toLowerCase() !== ADMIN_EMAIL.toLowerCase()) {
+          await db.auth.signOut();
+          throw new Error("This account is not authorised.");
+        }
+
+        await loadRequests();
+        showPage("adminPage");
+      } catch (error) {
+        showError(message, error);
+      } finally {
+        button.disabled = false;
+      }
+    });
+
+    async function loadRequests() {
+      const output = document.getElementById("requests");
+      const message = document.getElementById("adminMessage");
+      output.innerHTML = "";
+      message.textContent = "Loading...";
+
+      const { data, error } = await db
+        .from("date_requests")
+        .select("*")
+        .order("created_at", { ascending: false });
+
+      if (error) {
+        showError(message, error);
+        return;
+      }
+
+      message.textContent = data.length
+        ? `${data.length} date idea(s) received.`
+        : "No date ideas yet.";
+
+      data.forEach(item => {
+        const card = document.createElement("div");
+        card.className = "request";
+
+        const heading = document.createElement("strong");
+        heading.textContent = item.location || "No location provided";
+
+        const details = document.createElement("div");
+        details.textContent =
+          `Date: ${item.preferred_date || "Not specified"}\n` +
+          `Time: ${item.preferred_time || "Not specified"}\n` +
+          `Food: ${item.food || "Not specified"}\n` +
+          `Message: ${item.message || "None"}\n` +
+          `Submitted: ${item.created_at ? new Date(item.created_at).toLocaleString() : "Unknown"}`;
+
+        details.style.whiteSpace = "pre-line";
+        card.append(heading, details);
+        output.appendChild(card);
+      });
+    }
+
+    document.getElementById("refreshBtn").addEventListener("click", loadRequests);
+
+    document.getElementById("logoutBtn").addEventListener("click", async () => {
+      await db.auth.signOut();
+      showPage("formPage");
+    });
+
+    if (new URLSearchParams(window.location.search).get("admin") === "1") {
+      showPage("loginPage");
+    }
+  </script>
+</body>
+</html>
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>A Little Date Planning</title>
   <script src="https://jsdelivr.net"></script>
