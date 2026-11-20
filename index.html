@@ -11,36 +11,168 @@
 
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{background:#f8f3ed;color:#35251f;font-family:'DM Sans',sans-serif}
-header{padding:25px 8%;display:flex;justify-content:space-between;align-items:center}
-.logo{font-family:'Playfair Display';font-size:25px}
-.logo span{color:#ad725d}
-.hero{max-width:760px;margin:65px auto;padding:0 22px;text-align:center}
+
+body{
+background:#f8f3ed;
+color:#35251f;
+font-family:'DM Sans',sans-serif;
+min-height:100vh;
+}
+
+header{
+padding:25px 8%;
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+.logo{
+font-family:'Playfair Display';
+font-size:25px;
+}
+
+.logo span,h1 em{color:#ad725d}
+
+.hero{
+max-width:760px;
+margin:65px auto;
+padding:0 22px;
+text-align:center;
+}
+
 .heart{font-size:35px;margin-bottom:20px}
-h1{font-family:'Playfair Display';font-size:clamp(42px,7vw,66px);font-weight:500;line-height:1.15}
-h1 em{color:#ad725d}
-.subtitle{color:#88766c;margin:20px auto 35px;line-height:1.8;max-width:460px}
-.card{background:white;border:1px solid #eee2d8;border-radius:17px;padding:35px;text-align:left;box-shadow:0 15px 50px #583a2710}
+
+h1{
+font-family:'Playfair Display';
+font-size:clamp(42px,7vw,66px);
+font-weight:500;
+line-height:1.15;
+}
+
+.subtitle{
+color:#88766c;
+margin:20px auto 35px;
+line-height:1.8;
+max-width:460px;
+}
+
+.card{
+background:white;
+border:1px solid #eee2d8;
+border-radius:17px;
+padding:35px;
+text-align:left;
+box-shadow:0 15px 50px #583a2710;
+}
+
 .field{margin-bottom:23px}
-label{display:block;font-weight:600;font-size:13px;margin-bottom:10px}
-input,textarea{width:100%;padding:15px;border:1px solid #e9ded5;border-radius:9px;background:#fdfbf9;outline:none;color:#35251f}
+
+label{
+display:block;
+font-weight:600;
+font-size:13px;
+margin-bottom:10px;
+}
+
+input,textarea{
+width:100%;
+padding:15px;
+border:1px solid #e9ded5;
+border-radius:9px;
+background:#fdfbf9;
+outline:none;
+color:#35251f;
+font:inherit;
+}
+
 input:focus,textarea:focus{border-color:#ad725d}
+
 textarea{resize:vertical;min-height:95px}
-.submit{width:100%;padding:17px;background:#493027;color:white;border:0;border-radius:9px;font-weight:600;cursor:pointer;transition:.2s}
+
+.submit{
+width:100%;
+padding:17px;
+background:#493027;
+color:white;
+border:0;
+border-radius:9px;
+font-weight:600;
+cursor:pointer;
+transition:.2s;
+}
+
 .submit:hover{background:#825443}
-.submit:disabled{opacity:.6}
-.privacy{text-align:center;color:#a39489;font-size:11px;margin-top:17px}
-#message{text-align:center;margin-top:15px;font-size:13px}
-footer{text-align:center;padding:40px 15px;color:#a18e82;font-size:12px}
-.admin{display:none;max-width:850px;margin:65px auto;padding:20px}
-.admin h2{font-family:'Playfair Display';font-size:38px;margin-bottom:15px}
-.admin-card{background:white;padding:22px;border-radius:12px;margin:15px 0;border:1px solid #eee2d8}
-.admin-card p{margin:9px 0;color:#79665c;font-size:14px;overflow-wrap:anywhere}
+.submit:disabled{opacity:.6;cursor:wait}
+
+.privacy{
+text-align:center;
+color:#a39489;
+font-size:11px;
+margin-top:17px;
+}
+
+#message,#loginMessage{
+text-align:center;
+margin-top:15px;
+font-size:13px;
+overflow-wrap:anywhere;
+}
+
+footer{
+text-align:center;
+padding:40px 15px;
+color:#a18e82;
+font-size:12px;
+}
+
+.admin{
+display:none;
+max-width:850px;
+margin:65px auto;
+padding:20px;
+}
+
+.admin h2{
+font-family:'Playfair Display';
+font-size:38px;
+margin-bottom:15px;
+}
+
+.admin-card{
+background:white;
+padding:22px;
+border-radius:12px;
+margin:15px 0;
+border:1px solid #eee2d8;
+}
+
+.admin-card p{
+margin:9px 0;
+color:#79665c;
+font-size:14px;
+overflow-wrap:anywhere;
+}
+
 .admin-card h3{margin-bottom:12px}
-.admin button{cursor:pointer}
-#logout{padding:10px 16px;border:0;border-radius:7px;background:#493027;color:white;margin-bottom:20px}
-#loginMessage{margin-top:15px;color:#a33;font-size:13px}
-@media(max-width:600px){.hero{margin:35px auto}.card{padding:23px}header{padding:20px}}
+
+#logout{
+padding:10px 16px;
+border:0;
+border-radius:7px;
+background:#493027;
+color:white;
+margin-bottom:20px;
+cursor:pointer;
+}
+
+#refresh{margin-top:15px}
+
+@media(max-width:600px){
+.hero{margin:35px auto}
+.card{padding:23px}
+header{padding:20px}
+.admin h2{font-size:30px}
+}
 </style>
 </head>
 
@@ -48,16 +180,21 @@ footer{text-align:center;padding:40px 15px;color:#a18e82;font-size:12px}
 
 <header>
 <div class="logo">Just <span>Us.</span> ♡</div>
-<div style="font-size:11px;letter-spacing:2px;color:#ad725d">A LITTLE SURPRISE</div>
+<div style="font-size:11px;letter-spacing:2px;color:#ad725d">
+A LITTLE SURPRISE
+</div>
 </header>
 
 <section class="hero" id="invitation">
+
 <div class="heart">♡</div>
 
 <h1>Let's make a <em>date</em> of it.</h1>
 
 <p class="subtitle">
-I have something special in mind, but first, I'd love to know what your perfect date looks like.
+I have something special in mind, but first,
+I'd love to know what your perfect date looks like.
+
 Tell me what you're thinking, beautiful. ❤️
 </p>
 
@@ -66,7 +203,8 @@ Tell me what you're thinking, beautiful. ❤️
 
 <div class="field">
 <label>01 — Where would you love to go? 📍</label>
-<input id="location" maxlength="150" required placeholder="A restaurant, beach, somewhere special...">
+<input id="location" maxlength="150" required
+placeholder="A restaurant, beach, somewhere special...">
 </div>
 
 <div class="field">
@@ -81,53 +219,75 @@ Tell me what you're thinking, beautiful. ❤️
 
 <div class="field">
 <label>04 — What are we eating? 🍝</label>
-<input id="food" maxlength="150" required placeholder="Pizza, seafood, sushi...">
+<input id="food" maxlength="150" required
+placeholder="Pizza, seafood, sushi...">
 </div>
 
 <div class="field">
 <label>05 — Anything else you'd like? 💌</label>
-<textarea id="note" maxlength="1000" placeholder="Tell me anything else..."></textarea>
+<textarea id="note" maxlength="1000"
+placeholder="Tell me anything else..."></textarea>
 </div>
 
 <button class="submit" id="send" type="submit">
 Send my date plan ♡
 </button>
 
-<div id="message"></div>
-<p class="privacy">A little plan between you and me. ❤️</p>
+<div id="message" role="status"></div>
+
+<p class="privacy">
+A little plan between you and me. ❤️
+</p>
 
 </form>
 </div>
 </section>
 
 <section class="admin" id="admin">
+
 <h2>Your date requests. ❤️</h2>
-<p style="color:#88766c;margin-bottom:25px">Your private date-planning dashboard.</p>
+
+<p style="color:#88766c;margin-bottom:25px">
+Your private date-planning dashboard.
+</p>
 
 <div id="loginBox" class="card">
+
 <h3 style="margin-bottom:20px">Welcome back.</h3>
 
 <form id="loginForm">
+
 <div class="field">
 <label>Email address</label>
-<input type="email" id="email" required placeholder="Your email">
+<input type="email" id="email" required
+placeholder="Your email">
 </div>
 
 <div class="field">
 <label>Password</label>
-<input type="password" id="password" required placeholder="Your password">
+<input type="password" id="password" required
+placeholder="Your password">
 </div>
 
-<button class="submit" type="submit">Access dashboard →</button>
+<button class="submit" type="submit">
+Access dashboard →
+</button>
+
 </form>
 
-<div id="loginMessage"></div>
+<div id="loginMessage" role="status"></div>
 </div>
 
 <div id="dashboard" style="display:none">
+
 <button id="logout">Log out</button>
+
 <div id="requests"></div>
-<button class="submit" id="refresh">Refresh submissions ↻</button>
+
+<button class="submit" id="refresh">
+Refresh submissions ↻
+</button>
+
 </div>
 </section>
 
@@ -135,68 +295,89 @@ Send my date plan ♡
 
 <script>
 
-// YOUR SUPABASE CONNECTION
+// SUPABASE CONNECTION
 
-const SUPABASE_URL = "https://ftfajnfsafiotgpfrtku.supabase.co";
+const SUPABASE_URL =
+"https://ftfajnfsafiotgpfrtku.supabase.co";
 
-const SUPABASE_ANON_KEY = "sb_publishable_qFMp0c6HytpIwDVN59iGKw_VCpH74Xm";
+const SUPABASE_ANON_KEY =
+"sb_publishable_qFMp0c6HytpIwDVN59iGKw_VCpH74Xm";
+
+const ADMIN_ID =
+"05c634ce-21cf-494d-bafc-dc378b3f3d7c";
 
 const db = supabase.createClient(
 SUPABASE_URL,
 SUPABASE_ANON_KEY
 );
 
-// DATE SETUP
+// ELEMENTS
 
 const dateInput = document.getElementById("date");
-
-const today = new Date();
-const localToday = new Date(
-today.getTime() - today.getTimezoneOffset()*60000
-).toISOString().split("T")[0];
-
-dateInput.min = localToday;
-
-// SHOW ADMIN PAGE WHEN ?admin=1 IS USED
+const message = document.getElementById("message");
+const sendButton = document.getElementById("send");
 
 const adminMode =
 new URLSearchParams(window.location.search).get("admin") === "1";
 
+// DATE SETUP
+
+const today = new Date();
+
+const localToday = new Date(
+today.getTime() - today.getTimezoneOffset() * 60000
+).toISOString().split("T")[0];
+
+dateInput.min = localToday;
+
+// PAGE MODE
+
 if(adminMode){
-document.getElementById("invitation").style.display="none";
-document.getElementById("admin").style.display="block";
+document.getElementById("invitation").style.display = "none";
+document.getElementById("admin").style.display = "block";
 }
 
-// SUBMIT GIRLFRIEND'S DATE PLAN
+// SAFE HTML
 
-document.getElementById("dateForm").addEventListener("submit",async e=>{
+function escapeHTML(value){
+return String(value ?? "").replace(/[&<>"']/g, char => ({
+"&":"&amp;",
+"<":"&lt;",
+">":"&gt;",
+'"':"&quot;",
+"'":"&#039;"
+}[char]));
+}
+
+// SUBMIT DATE REQUEST
+
+document.getElementById("dateForm")
+.addEventListener("submit", async function(e){
 
 e.preventDefault();
 
-const button=document.getElementById("send");
-const message=document.getElementById("message");
+sendButton.disabled = true;
+sendButton.textContent = "Sending your plan...";
+message.textContent = "";
 
-button.disabled=true;
-button.textContent="Sending your plan...";
-message.textContent="";
-
-const request={
-location:document.getElementById("location").value.trim(),
-preferred_date:dateInput.value,
-preferred_time:document.getElementById("time").value,
-food:document.getElementById("food").value.trim(),
-message:document.getElementById("note").value.trim()
+const request = {
+location: document.getElementById("location").value.trim(),
+preferred_date: dateInput.value,
+preferred_time: document.getElementById("time").value,
+food: document.getElementById("food").value.trim(),
+message: document.getElementById("note").value.trim()
 };
 
 try{
 
-const {error}=await db
+const {data,error} = await db
 .from("date_requests")
-.insert(request);
+.insert(request)
+.select();
 
 if(error) throw error;
 
-document.querySelector("#dateForm").innerHTML=`
+document.getElementById("dateForm").innerHTML = `
 <div style="text-align:center;padding:25px 5px">
 <div style="font-size:55px;margin-bottom:20px">💌</div>
 <h2 style="font-family:'Playfair Display';font-size:35px;margin-bottom:15px">
@@ -206,16 +387,20 @@ It's a date!
 Your plans have been sent successfully.<br>
 Now let's make some beautiful memories. ❤️
 </p>
-</div>`;
+</div>
+`;
 
 }catch(error){
 
-console.error(error);
-message.style.color="#b33";
-message.textContent="Couldn't send your plans. Please try again.";
+console.error("Supabase submission error:",error);
 
-button.disabled=false;
-button.textContent="Send my date plan ♡";
+message.style.color = "#b33";
+message.textContent =
+"Error: " + (error.message || "Unknown error") +
+(error.details ? " — " + error.details : "");
+
+sendButton.disabled = false;
+sendButton.textContent = "Send my date plan ♡";
 
 }
 
@@ -223,101 +408,114 @@ button.textContent="Send my date plan ♡";
 
 // ADMIN LOGIN
 
-document.getElementById("loginForm").addEventListener("submit",async e=>{
+document.getElementById("loginForm")
+.addEventListener("submit",async function(e){
 
 e.preventDefault();
 
-const msg=document.getElementById("loginMessage");
-msg.textContent="Signing in...";
+const msg = document.getElementById("loginMessage");
+msg.style.color = "#a33";
+msg.textContent = "Signing in...";
 
-const {error}=await db.auth.signInWithPassword({
+try{
 
-email:document.getElementById("email").value,
+const {data,error} = await db.auth.signInWithPassword({
+email:document.getElementById("email").value.trim(),
 password:document.getElementById("password").value
-
 });
 
-if(error){
-msg.textContent="Login failed. Check your email and password.";
-return;
+if(error) throw error;
+
+if(data.user.id !== ADMIN_ID){
+
+await db.auth.signOut();
+
+throw new Error("This account is not authorized to access the dashboard.");
+
 }
 
-msg.textContent="";
+msg.textContent = "";
 await showDashboard();
+
+}catch(error){
+
+msg.textContent = error.message;
+
+}
 
 });
 
-// LOAD DASHBOARD
+// SHOW DASHBOARD
 
 async function showDashboard(){
 
-document.getElementById("loginBox").style.display="none";
-document.getElementById("dashboard").style.display="block";
+document.getElementById("loginBox").style.display = "none";
+document.getElementById("dashboard").style.display = "block";
 
 await loadRequests();
 
 }
 
-// LOAD SUBMISSIONS
+// LOAD REQUESTS
 
 async function loadRequests(){
 
-const container=document.getElementById("requests");
+const container = document.getElementById("requests");
 
-container.textContent="Loading date requests...";
+container.textContent = "Loading date requests...";
 
-const {data,error}=await db
+try{
+
+const {data,error} = await db
 .from("date_requests")
 .select("*")
 .order("created_at",{ascending:false});
 
-if(error){
-container.textContent="Unable to load requests. Check your permissions.";
-console.error(error);
-return;
-}
+if(error) throw error;
 
-container.innerHTML="";
+container.innerHTML = "";
 
-if(!data.length){
-container.textContent="No date plans received yet ❤️";
+if(!data || data.length === 0){
+
+container.textContent = "No date plans received yet ❤️";
 return;
+
 }
 
 data.forEach(item=>{
 
-const card=document.createElement("div");
-card.className="admin-card";
+const card = document.createElement("div");
+card.className = "admin-card";
 
-const heading=document.createElement("h3");
-heading.textContent="❤️ Date request #"+item.id;
-card.appendChild(heading);
+card.innerHTML = `
+<h3>❤️ Date request #${escapeHTML(item.id)}</h3>
 
-const details=[
-["Location",item.location],
-["Date",item.preferred_date],
-["Time",item.preferred_time],
-["Food",item.food],
-["Message",item.message||"No extra message"],
-["Received",new Date(item.created_at).toLocaleString()]
-];
+<p><strong>Location:</strong> ${escapeHTML(item.location)}</p>
 
-details.forEach(([label,value])=>{
+<p><strong>Date:</strong> ${escapeHTML(item.preferred_date)}</p>
 
-const p=document.createElement("p");
-const strong=document.createElement("strong");
+<p><strong>Time:</strong> ${escapeHTML(item.preferred_time)}</p>
 
-strong.textContent=label+": ";
-p.appendChild(strong);
-p.appendChild(document.createTextNode(value));
+<p><strong>Food:</strong> ${escapeHTML(item.food)}</p>
 
-card.appendChild(p);
+<p><strong>Message:</strong> ${escapeHTML(item.message || "No extra message")}</p>
 
-});
+<p><strong>Received:</strong> ${escapeHTML(
+new Date(item.created_at).toLocaleString()
+)}</p>
+`;
 
 container.appendChild(card);
 
 });
+
+}catch(error){
+
+console.error("Dashboard error:",error);
+
+container.textContent = "Error loading requests: " + error.message;
+
+}
 
 }
 
@@ -333,24 +531,42 @@ document.getElementById("logout")
 
 await db.auth.signOut();
 
-document.getElementById("dashboard").style.display="none";
-document.getElementById("loginBox").style.display="block";
+document.getElementById("dashboard").style.display = "none";
+document.getElementById("loginBox").style.display = "block";
 
 });
 
-// CHECK EXISTING LOGIN
+// CHECK EXISTING SESSION
 
-if(adminMode){
+async function checkSession(){
 
-db.auth.getSession().then(({data})=>{
+if(!adminMode) return;
+
+try{
+
+const {data,error} = await db.auth.getSession();
+
+if(error) throw error;
 
 if(data.session){
-showDashboard();
+
+if(data.session.user.id === ADMIN_ID){
+await showDashboard();
+}else{
+await db.auth.signOut();
 }
 
-});
+}
+
+}catch(error){
+
+console.error("Session error:",error);
 
 }
+
+}
+
+checkSession();
 
 </script>
 
