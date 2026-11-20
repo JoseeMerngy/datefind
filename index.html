@@ -1,11 +1,10 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>A Little Date Planning</title>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://jsdelivr.net"></script>
   <style>
     * { box-sizing: border-box; }
     body {
@@ -126,7 +125,7 @@
   </main>
 
   <script>
-    const SUPABASE_URL = "https://ftfajnfsafiotgpfrtku.supabase.co";
+    const SUPABASE_URL = "https://supabase.co";
     const SUPABASE_ANON_KEY = "sb_publishable_qFMp0c6HytpIwDVN59iGKw_VCpH74Xm";
     const ADMIN_EMAIL = "jawsafeyear@gmail.com";
 
@@ -254,24 +253,12 @@
 
     document.getElementById("logoutBtn").addEventListener("click", async () => {
       await db.auth.signOut();
-      showPage("loginPage");
+      showPage("formPage");
     });
 
-    async function start() {
-      if (new URLSearchParams(window.location.search).get("admin") === "1") {
-        const { data } = await db.auth.getSession();
-        if (data.session && data.session.user.email.toLowerCase() === ADMIN_EMAIL.toLowerCase()) {
-          await loadRequests();
-          showPage("adminPage");
-        } else {
-          showPage("loginPage");
-        }
-      } else {
-        showPage("formPage");
-      }
+    if (new URLSearchParams(window.location.search).get("admin") === "1") {
+      showPage("loginPage");
     }
-
-    start();
   </script>
 </body>
 </html>
